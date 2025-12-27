@@ -36,6 +36,11 @@ jobs:
         id: run-test
         run: npm run test
       - name: Upload test report
+      # Along with 'failure()', you can also use 'always()' or 'success()' based on your requirement
+      # always() - to run the step regardless of previous step's outcome
+      # success() - to run the step only if previous step succeeded
+      # cancel() - to run the step only if previous step was cancelled
+      # Here steps.run-test.outcome == 'failure' checks if the test step failed. Both conditions need to be true for the step to execute.
         if: failure() && steps.run-test.outcome == 'failure' 
         uses: actions/upload-artifact@v4
         with:
@@ -75,3 +80,11 @@ jobs:
         run: ls
       - name: Deploy
         run: echo "Deploying..."
+  report:
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output information
+        run: |
+          echo "Workflow completed!"
+          echo "${{ github }}"
