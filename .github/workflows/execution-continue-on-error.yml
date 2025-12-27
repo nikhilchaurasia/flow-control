@@ -1,8 +1,8 @@
 name: Website Deployment
-on:
-  push:
-    branches:
-      - main
+on: workflow_dispatch
+  # push:
+  #   branches:
+  #     - main
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -42,15 +42,11 @@ jobs:
           echo "Cache not found, installing dependencies"
           npm ci
       - name: Test code
+        # Continue the workflow even if this step fails. So the whole flow will continue and does not break when this step fails
         continue-on-error: true
         id: run-test
         run: npm run test
       - name: Upload test report
-      # Along with 'failure()', you can also use 'always()' or 'success()' based on your requirement
-      # always() - to run the step regardless of previous step's outcome
-      # success() - to run the step only if previous step succeeded
-      # cancel() - to run the step only if previous step was cancelled
-      # Here steps.run-test.outcome == 'failure' checks if the test step failed. Both conditions need to be true for the step to execute.
         uses: actions/upload-artifact@v4
         with:
           name: test-report
