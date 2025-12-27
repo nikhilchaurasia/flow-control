@@ -20,7 +20,9 @@ jobs:
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: |
+          echo "Cache not found, installing dependencies"
+          npm ci
       - name: Lint code
         run: npm run lint
   test:
@@ -36,7 +38,9 @@ jobs:
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: |
+          echo "Cache not found, installing dependencies"
+          npm ci
       - name: Test code
         id: run-test
         run: npm run test
