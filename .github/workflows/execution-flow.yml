@@ -15,7 +15,7 @@ jobs:
         with:
           # Instead of ~/npm, using node-modules to demonstrate caching and if condition
           # So the job will skip installing dependencies if cache is hit and will make job more faster
-          # added commit to demonstrate the flow
+          # added commit to demonstrate flow
           path: node_modules
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
