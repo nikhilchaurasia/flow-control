@@ -79,8 +79,10 @@ jobs:
           path: dist
   deploy:
     needs: build
+    # Here using custom reusable workflow to download artifact and list files
     uses: ./.github/workflows/reusable-workflow.yaml
     with:
+      # Here we are passing the artifact name to the reusable workflow
       artifact-name: "dist-files"
   # report:
   #   needs: [lint, deploy]
