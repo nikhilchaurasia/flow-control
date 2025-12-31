@@ -1,20 +1,35 @@
 name: Reuable Workflow
 on: 
   workflow_call:
+    outputs:
+      workflow-result:
+        description: This is over all result of workflow
+        value: ${{ jobs.deploy.outputs.workflow-result}}
+
     inputs:
       artifact-name:
         description: "Artifact name"
         required: false
         type: string
         default: "dist"
+    # We can pass the secrets from the calling workflow to the reusable workflow
+    secrets:
+      some-secret:
 jobs:
   deploy:
+    outputs:
+      workflow-result: ${{ steps.result-step.outputs.step-result }}
     runs-on: ubuntu-latest
     steps:
       - name: Get build artifacts
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.artifact-name }}
+      - name: Set result step
+        id: result-step
+        run: |
+          echo "step-result=success" >> $GITHUB_OUTPUT
       - name: List file
         run: |
           ls -la
+          echo "Secret value is ${{ secrets.some-secret }}"

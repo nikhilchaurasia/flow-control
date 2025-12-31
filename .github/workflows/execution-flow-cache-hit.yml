@@ -84,6 +84,17 @@ jobs:
     with:
       # Here we are passing the artifact name to the reusable workflow
       artifact-name: "dist-files"
+    # We need to pass the secret at the same level as with
+    # secrets:
+    #   some-secret: ${{ secrets.SOME_SECRET }}
+  
+  print-reusable-workflow-result:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print reusable workflow result output
+        run: |
+          echo "Reusable workflow output: ${{ needs.deploy.outputs.workflow-result }}"
   # report:
   #   needs: [lint, deploy]
   #   if: failure()
